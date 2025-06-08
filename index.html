@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Home Dashboard</title>
+  <style>
+    body { font-family: Arial; text-align: center; padding: 30px; }
+    .device { padding: 20px; border: 1px solid #ccc; margin: 10px; display: inline-block; }
+    .on { background-color: #b9f6ca; }
+    .off { background-color: #ffccbc; }
+  </style>
+</head>
+<body>
+  <h1>Voice-Controlled Smart Home Dashboard</h1>
+  <button onclick="startListening()">🎤 Start Voice Command</button>
+  <div class="device" id="light">💡 Light: <span id="light-status">Off</span></div>
+  <div class="device" id="fan">🌀 Fan: <span id="fan-status">Off</span></div>
+
+  <script>
+    function startListening() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = 'en-US';
+      recognition.start();
+
+      recognition.onresult = function(event) {
+        const command = event.results[0][0].transcript.toLowerCase();
+        if (command.includes("light on")) {
+          document.getElementById("light").classList.add("on");
+          document.getElementById("light-status").innerText = "On";
+        } else if (command.includes("light off")) {
+          document.getElementById("light").classList.remove("on");
+          document.getElementById("light-status").innerText = "Off";
+        } else if (command.includes("fan on")) {
+          document.getElementById("fan").classList.add("on");
+          document.getElementById("fan-status").innerText = "On";
+        } else if (command.includes("fan off")) {
+          document.getElementById("fan").classList.remove("on");
+          document.getElementById("fan-status").innerText = "Off";
+        } else {
+          alert("Unknown command: " + command);
+        }
+      };
+    }
+  </script>
+</body>
+</html>
